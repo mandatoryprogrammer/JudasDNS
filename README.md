@@ -1,4 +1,17 @@
 # Judas DNS
+```
+                                                   
+                          ,,                                                        
+   `7MMF'               `7MM                       `7MM"""Yb. `7MN.   `7MF'.M"""bgd 
+     MM                   MM                         MM    `Yb. MMN.    M ,MI    "Y 
+     MM `7MM  `7MM   ,M""bMM   ,6"Yb.  ,pP"Ybd       MM     `Mb M YMb   M `MMb.     
+     MM   MM    MM ,AP    MM  8)   MM  8I   `"       MM      MM M  `MN. M   `YMMNq. 
+     MM   MM    MM 8MI    MM   ,pm9MM  `YMMMa.       MM     ,MP M   `MM.M .     `MM 
+(O)  MM   MM    MM `Mb    MM  8M   MM  L.   I8       MM    ,dP' M     YMM Mb     dM 
+ Ymmm9    `Mbod"YML.`Wbmd"MML.`Moo9^Yo.M9mmmP'     .JMMmmmdP' .JML.    YM P"Ybmmd"  
+
+                                         Nameserver DNS poisoning attacks made easy
+```
 A DNS proxy server built to be deployed in place of a taken over nameserver to perform targeted exploitation. Judas works by proxying all DNS queries to the legitimate nameservers for a domain. The magic comes with Judas's rule configurations which allow you to change DNS responses depending on source IP or DNS query type. This allows an attacker to configure a malicious nameserver to do things like selectively re-route inbound email coming from specified source IP ranges (via modified MX records), set extremely long TTLs to keep poisoned records cached, and more.
 
 # Example Config

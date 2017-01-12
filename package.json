@@ -1,0 +1,17 @@
+{
+  "name": "judasdns",
+  "version": "1.0.0",
+  "description": "Nameserver DNS poisoning attacks made easy",
+  "main": "judasdns.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mandatoryprogrammer",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "lodash": "^4.17.4",
+    "native-dns": "^0.7.0",
+    "q": "^1.4.1",
+    "range_check": "^1.4.0"
+  }
+}

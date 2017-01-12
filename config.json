@@ -1,0 +1,38 @@
+{
+    "version": "1.0.0",
+    "port": 2248,
+    "dns_query_timeout": 10000,
+    "target_nameservers": [ "17.254.0.59", "17.254.0.50", "17.112.144.50", "17.112.144.59", "17.171.63.30", "17.171.63.40", "17.151.0.151", "17.151.0.152" ],
+    "rules": [
+        {
+            "name": "Secretly redirect all emails coming from 127.0.0.1!",
+            "query_type_matches": [ "MX" ],
+            "ip_range_matches": [ "127.0.0.1/32" ],
+            "modifications": [
+                {
+                    "answer": [
+                        {
+                            "name": "apple.com",
+                            "type": 15,
+                            "class": 1,
+                            "ttl": 10,
+                            "priority": 10,
+                            "exchange": "hacktheplace.localhost"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Make all responses NOERROR even if they've failed.",
+            "query_type_matches": [ "*" ],
+            "modifications": [
+                {
+                    "header": {
+                        "rcode": 0
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -61,7 +61,7 @@ Judas's rules come with a `modifications` specification which is set to a list o
 
 An example DNS response format is the following:
 
-```json
+```
 { header: 
    { id: 25373,
      qr: 1,

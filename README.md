@@ -14,6 +14,9 @@
 ```
 A DNS proxy server built to be deployed in place of a taken over nameserver to perform targeted exploitation. Judas works by proxying all DNS queries to the legitimate nameservers for a domain. The magic comes with Judas's rule configurations which allow you to change DNS responses depending on source IP or DNS query type. This allows an attacker to configure a malicious nameserver to do things like selectively re-route inbound email coming from specified source IP ranges (via modified MX records), set extremely long TTLs to keep poisoned records cached, and more.
 
+# How Do I Take Over a Nameserver?
+For more information on taking over nameservers and hijacking DNS, see the following blog post titled ["Respect My Authority – Hijacking Broken Nameservers to Compromise Your Target"](https://thehackerblog.com/respect-my-authority-hijacking-broken-nameservers-to-compromise-your-target/).
+
 # Example Config
 The following is an example configuration for Judas for an example scenario where an attacker has comprimised/taken over one of Apple's authoritative nameservers (for `apple.com`):
 

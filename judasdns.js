@@ -51,6 +51,28 @@ var RRCODE_TO_QUERY_NAME_MAP = {
     256: "URI"
 }
 
+var RCODE_TO_RESPONSE_CODE_NAME_MAP = {
+    0: "NOERROR",
+    1: "FORMERR",
+    2: "SERVFAIL",
+    3: "NXDOMAIN",
+    4: "NOTIMP",
+    5: "REFUSED",
+    6: "YXDOMAIN",
+    7: "YXRRSET",
+    8: "NXRRSET",
+    9: "NOTAUTH",
+    10: "NOTZONE",
+    16: "BADSIG",
+    17: "BADKEY",
+    18: "BADTIME",
+    19: "BADMODE",
+    20: "BADNAME",
+    21: "BADALG",
+    22: "BADTRUNC",
+    23: "BADCOOKIE"
+}
+
 /*
  * Get random element from target array
  */
@@ -132,50 +154,7 @@ function dns_request( request_data ) {
         });
 
         req.on( "message", function ( err, answer ) {
-            if( err ) {
-                reject({
-                    "error": "UNKNOWN",
-                    "raw_error": err,
-                    "request": request_data,
-                });
-            } else {
-                var reject_object = {
-                    "error": "UNKNOWN",
-                    "request": request_data,
-                }
-                if( answer.header.rcode === 0 ) {
-                    resolve( answer );
-                } else if( answer.header.rcode === 1 ) {
-                    reject_object.error = "FORMERROR";
-                    reject( reject_object );
-                } else if( answer.header.rcode === 2 ) {
-                    reject_object.error = "SERVFAIL";
-                    reject( reject_object );
-                } else if( answer.header.rcode === 3 ) {
-                    reject_object.error = "NXDOMAIN";
-                    reject( reject_object );
-                } else if( answer.header.rcode === 4 ) {
-                    reject_object.error = "NOTIMP";
-                    reject( reject_object );
-                } else if( answer.header.rcode === 5 ) {
-                    reject_object.error = "REFUSED";
-                    reject( reject_object );
-                } else if( answer.header.rcode === 6 ) {
-                    reject_object.error = "YXDOMAIN";
-                    reject( reject_object );
-                } else if( answer.header.rcode === 7 ) {
-                    reject_object.error = "XRRSET";
-                    reject( reject_object );
-                } else if( answer.header.rcode === 8 ) {
-                    reject_object.error = "NOTAUTH";
-                    reject( reject_object );
-                } else if( answer.header.rcode === 9 ) {
-                    reject_object.error = "NOTZONE";
-                    reject( reject_object );
-                } else {
-                    reject( reject_object );
-                }
-            }
+            resolve( answer );
         });
 
         req.send();
@@ -200,6 +179,16 @@ function rule_matches( request, response, modification_rule ) {
                     return true;
                 }
             }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    function response_code_matches() {
+        if( "response_code_matches" in modification_rule ) {
+           return ( rcode_to_responsename( response.header.rcode === modification_rule.response_code_matches ) ||
+                   contains( "*", modification_rule.response_code_matches ) );
         } else {
             return true;
         }
@@ -246,6 +235,13 @@ function apply_response_modifications( request, response ) {
 function rrcode_to_queryname( rrcode ) {
     if( rrcode in RRCODE_TO_QUERY_NAME_MAP ) {
         return RRCODE_TO_QUERY_NAME_MAP[ rrcode ];
+    }
+    return "UKNOWN";
+}
+
+function rcode_to_responsename( rcode ) {
+    if( rrcode in RCODE_TO_RESPONSE_CODE_NAME_MAP ) {
+        return RCODE_TO_RESPONSE_CODE_NAME_MAP[ rcode ];
     }
     return "UKNOWN";
 }

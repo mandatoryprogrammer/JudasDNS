@@ -33,6 +33,26 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "Make all NXDOMAIN responses return an A record with NOERROR.",
+            "response_code_matches": [ "NXDOMAIN" ],
+            "modifications": [
+                {
+                    "header": {
+                        "rcode": 0
+                    },
+                    "answer": [
+                        {
+                            "name": "apple.com",
+                            "type": 1,
+                            "class": 1,
+                            "ttl": 10,
+                            "address": "1.3.3.7"
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

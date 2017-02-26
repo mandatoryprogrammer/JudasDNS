@@ -183,4 +183,65 @@ Another example is the following:
 }
 ```
 
-The above rule matches any `MX` query from `127.0.0.1`. The DNS response's answer is overwritten with a single MX record for `hacktheplace.localhost`. A real world implementation of this would be to redirect inbound emails from a specific IP in order to read private emails of your target. Additionally an attacker in a real world scenario may also choose to modify the response TTL to be a very high value in order to persist their malicious records in client DNS caches as long as possible.
+The above rule matches any `MX` query from `127.0.0.1`. The DNS response answer is overwritten with a single MX record for `hacktheplace.localhost`. A real world implementation of this would be to redirect inbound emails from a specific IP in order to read private emails of your target. Additionally an attacker in a real world scenario may also choose to modify the response TTL to be a very high value in order to persist their malicious records in client DNS caches as long as possible.
+
+# Rule Match Types
+
+## Requester IP
+The following rule will match on a client's IP address:
+
+```json
+{
+  "name": "Make all responses requested from localhost (127.0.0.1) NOERROR.",
+  "ip_range_matches": [ "127.0.0.1/32" ],
+  "modifications": [
+    {
+      "header": {
+        "rcode": 0
+      }
+    }
+  ]
+}
+```
+
+The `ip_range_matches` field is set to an array of IP ranges which specify the target ranges to apply the response modification to. Omission of this field is equivalent to a wildcard and will match all client IP addresses.
+
+## Request Query Type
+The following rule will match on a query type of `MX` and `CNAME` and apply a response modification accordingly:
+
+```json
+{
+  "name": "Make all responses NOERROR even if they've failed.",
+  "query_type_matches": [ "MX", "CNAME" ],
+  "modifications": [
+    {
+      "header": {
+        "rcode": 0
+      }
+    }
+  ]
+}
+```
+
+The `query_type_matches` field is set to an array of query types to match against. Omission of this field is equivalent to a wildcard and will match all query types.
+
+## Response Status Code
+
+The following rule with match on a response code of `NXDOMAIN` and will apply a response modification accordingly:
+
+```json
+{
+  "name": "Make all responses requested from localhost (127.0.0.1) NOERROR.",
+  "response_code_matches": [ "NXDOMAIN" ],
+  "modifications": [
+    {
+      "header": {
+        "rcode": 0
+      }
+    }
+  ]
+}
+```
+
+The `response_code_matches` field is set to an array of response codes to match against. Omission of this field is equivalent to a wildcard and will match all RCODE types.
+
